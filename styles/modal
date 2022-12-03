@@ -1,0 +1,18 @@
+export const modalStyles = {
+  box: {
+    position: "absolute",
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+    width: 400,
+    bgcolor: "background.paper",
+    boxShadow: 24,
+    p: 4,
+    borderRadius: "15px",
+  },
+  close_btn: {
+    position: "absolute",
+    top: "16px",
+    right: "16px",
+  },
+};
