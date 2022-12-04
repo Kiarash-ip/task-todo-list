@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useState } from "react";
 import {
   Typography,
   Modal,
@@ -11,11 +11,29 @@ import {
 import { modalStyles } from "../styles/modal";
 import CloseIcon from "@mui/icons-material/Close";
 import { useTheme } from "@emotion/react";
+import { useDispatch } from "react-redux";
+import { addTodo } from "../redux/todosSlice";
+import { v4 as uuidv4 } from "uuid";
 
 export default function ModalComp({ modalOpen, setModalOpen }) {
-  const modalSubjectRef = useRef("");
-  const modalDesRef = useRef("");
+  const [subject, setSubject] = useState("");
+  const [description, setDescription] = useState("");
   const theme = useTheme();
+  const dispatch = useDispatch();
+
+  function createTodoHandler() {
+    dispatch(
+      addTodo({
+        id: uuidv4(),
+        subject,
+        description,
+        isDone: false,
+      })
+    );
+    setSubject("");
+    setDescription("");
+    setModalOpen(false);
+  }
 
   return (
     <Modal open={modalOpen}>
@@ -33,19 +51,25 @@ export default function ModalComp({ modalOpen, setModalOpen }) {
           <TextField
             id="outlined-disabled"
             label="Subject"
-            ref={modalSubjectRef}
+            value={subject}
+            onChange={(e) => setSubject(e.target.value)}
             defaultValue=""
           />
           <TextField
             id="filled-multiline-flexible"
             label="Description"
-            ref={modalDesRef}
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
             multiline
             maxRows={5}
             minRows={3}
             variant="outlined"
           />
-          <Button variant="contained" color="primary">
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={createTodoHandler}
+          >
             Create
           </Button>
         </Grid>

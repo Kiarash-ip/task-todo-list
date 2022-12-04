@@ -13,18 +13,22 @@ import {
 import TodoComp from "./TodoComp";
 import { useTheme } from "@emotion/react";
 import ModalComp from "./ModalComp";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { connect } from "react-redux";
+import { wrapper, State } from "../redux/store";
+import { selectTodosState } from "../redux/todosSlice";
+import { setInitState } from "../redux/todosSlice";
 
-export default function TodoList({ todoItems }) {
+export default function TodoList({ todos }) {
   const [modalOpen, setModalOpen] = useState(false);
+  const state = useSelector(selectTodosState);
   const theme = useTheme();
   const dispatch = useDispatch();
 
+  console.log(state);
+
   useEffect(() => {
-    dispatch({
-      type: "set_init_state",
-      payload: localStorage.getItem("todos") || [],
-    });
+    dispatch(setInitState());
   }, []);
 
   return (
@@ -40,9 +44,17 @@ export default function TodoList({ todoItems }) {
       >
         Add New Todo
       </Button>
-      <Box sx={{ bgcolor: "#cfe8fc", height: "100vh" }}>
-        {[1, 2, 3].map((todo) => {
-          return <TodoComp />;
+      <Box sx={{ bgcolor: "#0d47a1", height: "100vh", borderRadius: "5px" }}>
+        {state.map((todo) => {
+          return (
+            <TodoComp
+              key={todo.id}
+              id={todo.id}
+              subject={todo.subject}
+              description={todo.description}
+              isDone={todo.isDone}
+            />
+          );
         })}
       </Box>
       <ModalComp modalOpen={modalOpen} setModalOpen={setModalOpen} />

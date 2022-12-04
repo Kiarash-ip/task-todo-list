@@ -4,7 +4,8 @@ import TodoList from "../components/TodoList";
 import { ThemeProvider } from "@mui/system";
 import { theme } from "../styles/theme";
 
-export default function Home({ todos }) {
+export default function Home() {
+  // console.log(todos);
   return (
     <ThemeProvider theme={theme}>
       <div>
@@ -12,7 +13,7 @@ export default function Home({ todos }) {
           <title>Todo List</title>
           <link rel="icon" href="/favicon.ico" />
         </Head>
-        <TodoList todoItems={todos} />
+        <TodoList />
       </div>
     </ThemeProvider>
   );
